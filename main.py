@@ -89,6 +89,9 @@ def server(input, output, session):
         fig.update_layout(
             xaxis_title = "Category",
             yaxis_title = "RSI",
+            yaxis = dict(
+                range = [max(min(sel_df["Observation"] - 10), 0), max(sel_df["Observation"]) + 10],
+            )
         )
         return fig
 
@@ -99,6 +102,9 @@ def server(input, output, session):
         fig.update_layout(
             xaxis_title="Category",
             yaxis_title="RSI",
+            yaxis=dict(
+                range=[max(min(sel_df["Observation"] - 10), 0), max(sel_df["Observation"]) + 10],
+            )
         )
         return fig
 
@@ -109,6 +115,9 @@ def server(input, output, session):
         fig.update_layout(
             xaxis_title="Category",
             yaxis_title="RSI",
+            yaxis=dict(
+                range=[max(min(sel_df["Observation"] - 10), 0), max(sel_df["Observation"]) + 10],
+            )
         )
         return fig
 
