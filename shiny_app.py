@@ -24,11 +24,11 @@ app_ui = ui.page_fluid(
     ui.page_navbar(
         ui.nav_panel("Dashboard", (
             ui.card(
-                ui.card_header("Monthly Retail Sales Index per Industry-Business"),
+                ui.card_header("Monthly Retail Sales Index per Category-Business"),
                 ui.layout_sidebar(
                     ui.sidebar(("Options",
                                 ui.input_select(
-                                    "var1", "Industry", choices=unique_USIC_no_business
+                                    "var1", "Category", choices=unique_USIC_no_business
                                 ),
                                 ui.input_select(
                                     "var2", "Type of Price", choices=unique_prices
@@ -38,16 +38,16 @@ app_ui = ui.page_fluid(
             ),
             ui.layout_column_wrap(
                 ui.card(
-                    ui.card_header(f"Average RSI by Industry - {unique_business_types[1]} ({unique_prices[0]}) > {barchart_years[0]}-{barchart_years[-1]}"),
+                    ui.card_header(f"Average RSI by Category - {unique_business_types[1]} ({unique_prices[0]}) > {barchart_years[0]}-{barchart_years[-1]}"),
                     output_widget("bar_chart_1")
                 ),
                 ui.card(
-                    ui.card_header(f"Average RSI by Industry - {unique_business_types[2]} ({unique_prices[0]}) > {barchart_years[0]}-{barchart_years[-1]}"),
+                    ui.card_header(f"Average RSI by Category - {unique_business_types[2]} ({unique_prices[0]}) > {barchart_years[0]}-{barchart_years[-1]}"),
                     output_widget("bar_chart_2")
                 ),
             ),
             ui.card(
-                ui.card_header(f"Average RSI by Industry - {unique_business_types[0]} ({unique_prices[0]}) > {barchart_years[0]}-{barchart_years[-1]}"),
+                ui.card_header(f"Average RSI by Category - {unique_business_types[0]} ({unique_prices[0]}) > {barchart_years[0]}-{barchart_years[-1]}"),
                 output_widget("bar_chart_3")
             )
         )),
@@ -77,26 +77,39 @@ def server(input, output, session):
             title = f"Retail Sales Index (RSI) (Base Year = 100) - {input.var1()} / {input.var2()}",
             xaxis_title = "Time",
             yaxis_title = "RSI",
+            colorway=px.colors.qualitative.Set1
         )
 
         return fig
 
     @render_widget
     def bar_chart_1():
-        sel_df = avg_rsi[(avg_rsi['Year'].isin(barchart_years) ) & (avg_rsi['Price'] == unique_prices[0]) & (avg_rsi['USIC_business'] == unique_business_types[1])].copy()
-        fig = px.bar(sel_df, x="USIC_industry", y = "Observation", color = "Year", barmode = "group")
+        sel_df = avg_rsi[(avg_rsi['Year'].isin(barchart_years) ) & (avg_rsi['Price'] == unique_prices[0]) & (avg_rsi['USIC_business'] == unique_business_types[1])]
+        fig = px.bar(sel_df, x="USIC_industry", y = "Observation", color = "Year", barmode = "group", color_discrete_sequence=px.colors.qualitative.Set2)
+        fig.update_layout(
+            xaxis_title = "Category",
+            yaxis_title = "RSI",
+        )
         return fig
 
     @render_widget
     def bar_chart_2():
         sel_df = avg_rsi[(avg_rsi['Year'].isin(barchart_years) ) & (avg_rsi['Price'] == unique_prices[0]) & (avg_rsi['USIC_business'] == unique_business_types[2])]
-        fig = px.bar(sel_df, x="USIC_industry", y = "Observation", color = "Year", barmode = "group")
+        fig = px.bar(sel_df, x="USIC_industry", y = "Observation", color = "Year", barmode = "group", color_discrete_sequence=px.colors.qualitative.Set2)
+        fig.update_layout(
+            xaxis_title="Category",
+            yaxis_title="RSI",
+        )
         return fig
 
     @render_widget
     def bar_chart_3():
         sel_df = avg_rsi[(avg_rsi['Year'].isin(barchart_years) ) & (avg_rsi['Price'] == unique_prices[0]) & (avg_rsi['USIC_business'] == unique_business_types[0])]
-        fig = px.bar(sel_df, x="USIC_industry", y = "Observation", color = "Year", barmode = "group")
+        fig = px.bar(sel_df, x="USIC_industry", y = "Observation", color = "Year", barmode = "group", color_discrete_sequence=px.colors.qualitative.Set2)
+        fig.update_layout(
+            xaxis_title="Category",
+            yaxis_title="RSI",
+        )
         return fig
 
 
