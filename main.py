@@ -1,5 +1,5 @@
 import pandas as pd
-from app_data import df, avg_rsi
+from data import df, avg_rsi
 from shiny import App, render, ui
 import plotly.express as px
 import plotly.graph_objects as go
